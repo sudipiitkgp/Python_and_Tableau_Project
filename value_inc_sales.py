@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Jul 14 15:16:13 2023
-
-@author: Sudip
-"""
 import pandas as pd #importing pandas
 import warnings
 warnings.filterwarnings('ignore')
