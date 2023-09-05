@@ -94,9 +94,59 @@ title_neu_sentiment = pd.Series(title_neu_sentiment)
 data['title_neg_sentiment'] = title_neg_sentiment
 data['title_pos_sentiment'] = title_pos_sentiment
 data['title_neu_sentiment'] = title_neu_sentiment
-#writinng the data
 
-data.to_excel('blogme_cleaned.xlsx' , sheet_name = 'blogmedata', index = False)
+# Calculate the average negative and positive sentiment scores
+avg_negative_sentiment = title_neg_sentiment.mean()
+avg_positive_sentiment = title_pos_sentiment.mean()
+
+# Print the average sentiment scores
+print("Average Negative Sentiment Score:", avg_negative_sentiment)
+print("Average Positive Sentiment Score:", avg_positive_sentiment)
+
+# Create empty lists to store sentiment scores
+title_sentiments = []
+
+# Loop through each title in the dataset
+for i in range(len(data)):
+    try:
+        # Get the title text
+        text = data['title'][i]
+        
+        # Analyze the sentiment of the title
+        sent = sent_int.polarity_scores(text)
+        
+        # Append the sentiment scores to the list
+        title_sentiments.append(sent)
+        
+    except:
+        # Handle exceptions (e.g., if the text is empty)
+        title_sentiments.append({'neg': 0, 'neu': 0, 'pos': 0, 'compound': 0})
+
+# Convert the list of sentiment scores to a DataFrame
+sentiments_df = pd.DataFrame(title_sentiments)
+
+# Calculate the overall positive, negative, and neutral sentiments in percentages
+total_titles = len(data)
+positive_score = sentiments_df['pos'].sum()
+negative_score = sentiments_df['neg'].sum()
+neutral_score = sentiments_df['neu'].sum()
+
+# Print the percentages
+print("Overall Positive Sentiment:", positive_score)
+print("Overall Negative Sentiment:", negative_score)
+print("Overall Neutral Sentiment:", neutral_score)
+
+# Save the updated DataFrame to a new Excel file
+data.to_excel('blogme_cleaned_with_sentiment.xlsx', sheet_name='blogmedata', index=False)
+
+
+
+
+
+
+
+
+
 
 
 
